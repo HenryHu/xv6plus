@@ -1,0 +1,1487 @@
+# 1 "e100.c"
+# 1 "/home/henryhu/projs/xv6//"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "e100.c"
+# 1 "types.h" 1
+
+
+typedef unsigned int uint;
+typedef unsigned int uint32_t;
+typedef unsigned short ushort;
+typedef unsigned short uint16_t;
+typedef unsigned char uchar;
+typedef unsigned char uint8_t;
+# 2 "e100.c" 2
+# 1 "x86.h" 1
+
+
+
+
+static inline uchar
+inb(ushort port)
+{
+  uchar data;
+
+  asm volatile("in %1,%0" : "=a" (data) : "d" (port));
+  return data;
+}
+
+static inline uint
+inl(ushort port)
+{
+    uint data;
+
+    asm volatile("in %1,%0" : "=a" (data) : "d" (port));
+    return data;
+}
+
+static inline ushort
+inw(ushort port)
+{
+    ushort data;
+
+    asm volatile("in %1,%0" : "=a" (data) : "d" (port));
+    return data;
+}
+
+static inline void
+insl(int port, void *addr, int cnt)
+{
+  asm volatile("cld\n\trepne\n\tinsl" :
+                   "=D" (addr), "=c" (cnt) :
+                   "d" (port), "0" (addr), "1" (cnt) :
+                   "memory", "cc");
+}
+
+static inline void
+outb(ushort port, uchar data)
+{
+  asm volatile("out %0,%1" : : "a" (data), "d" (port));
+}
+
+static inline void
+outw(ushort port, ushort data)
+{
+  asm volatile("out %0,%1" : : "a" (data), "d" (port));
+}
+
+static inline void
+outl(ushort port, uint data)
+{
+    asm volatile("out %0,%1" : : "a" (data), "d" (port));
+}
+
+static inline void
+outsl(int port, const void *addr, int cnt)
+{
+  asm volatile("cld\n\trepne\n\toutsl" :
+                   "=S" (addr), "=c" (cnt) :
+                   "d" (port), "0" (addr), "1" (cnt) :
+                   "cc");
+}
+
+struct segdesc;
+
+static inline void
+lgdt(struct segdesc *p, int size)
+{
+  volatile ushort pd[3];
+
+  pd[0] = size-1;
+  pd[1] = (uint)p;
+  pd[2] = (uint)p >> 16;
+
+  asm volatile("lgdt (%0)" : : "r" (pd));
+}
+
+struct gatedesc;
+
+static inline void
+lidt(struct gatedesc *p, int size)
+{
+  volatile ushort pd[3];
+
+  pd[0] = size-1;
+  pd[1] = (uint)p;
+  pd[2] = (uint)p >> 16;
+
+  asm volatile("lidt (%0)" : : "r" (pd));
+}
+
+static inline void
+ltr(ushort sel)
+{
+  asm volatile("ltr %0" : : "r" (sel));
+}
+
+static inline uint
+read_eflags(void)
+{
+  uint eflags;
+  asm volatile("pushfl; popl %0" : "=r" (eflags));
+  return eflags;
+}
+
+static inline void
+write_eflags(uint eflags)
+{
+  asm volatile("pushl %0; popfl" : : "r" (eflags));
+}
+
+static inline void
+cpuid(uint info, uint *eaxp, uint *ebxp, uint *ecxp, uint *edxp)
+{
+  uint eax, ebx, ecx, edx;
+
+  asm volatile("cpuid" :
+               "=a" (eax), "=b" (ebx), "=c" (ecx), "=d" (edx) :
+               "a" (info));
+  if(eaxp)
+    *eaxp = eax;
+  if(ebxp)
+    *ebxp = ebx;
+  if(ecxp)
+    *ecxp = ecx;
+  if(edxp)
+    *edxp = edx;
+}
+
+static inline uint
+cmpxchg(uint oldval, uint newval, volatile uint* lock_addr)
+{
+  uint result;
+
+
+  asm volatile("lock; cmpxchgl %2, %0" :
+                       "+m" (*lock_addr), "=a" (result) :
+                       "r"(newval), "1"(oldval) :
+                       "cc");
+  return result;
+}
+
+static inline void
+cli(void)
+{
+  asm volatile("cli");
+}
+
+static inline void
+sti(void)
+{
+  asm volatile("sti");
+}
+
+
+
+struct trapframe {
+
+  uint edi;
+  uint esi;
+  uint ebp;
+  uint oesp;
+  uint ebx;
+  uint edx;
+  uint ecx;
+  uint eax;
+
+
+  ushort es;
+  ushort padding1;
+  ushort ds;
+  ushort padding2;
+  uint trapno;
+
+
+  uint err;
+  uint eip;
+  ushort cs;
+  ushort padding3;
+  uint eflags;
+
+
+  uint esp;
+  ushort ss;
+  ushort padding4;
+};
+# 3 "e100.c" 2
+# 1 "pci.h" 1
+
+
+
+
+
+
+enum { pci_res_bus, pci_res_mem, pci_res_io, pci_res_max };
+
+struct pci_bus;
+
+struct pci_func {
+    struct pci_bus *bus;
+
+    uint32_t dev;
+    uint32_t func;
+
+    uint32_t dev_id;
+    uint32_t dev_class;
+
+    uint32_t reg_base[6];
+    uint32_t reg_size[6];
+    uint8_t irq_line;
+};
+
+struct pci_bus {
+    struct pci_func *parent_bridge;
+    uint32_t busno;
+};
+
+int pci_init(void);
+void pci_func_enable(struct pci_func *f);
+
+int ether_send(void *buffer, int len);
+int ether_receive(void *buffer, int len);
+# 4 "e100.c" 2
+# 1 "pcireg.h" 1
+# 50 "pcireg.h"
+typedef uint16_t pci_vendor_id_t;
+typedef uint16_t pci_product_id_t;
+# 111 "pcireg.h"
+typedef uint8_t pci_class_t;
+typedef uint8_t pci_subclass_t;
+typedef uint8_t pci_interface_t;
+typedef uint8_t pci_revision_t;
+# 540 "pcireg.h"
+typedef uint8_t pci_intr_latency_t;
+typedef uint8_t pci_intr_grant_t;
+typedef uint8_t pci_intr_pin_t;
+typedef uint8_t pci_intr_line_t;
+# 645 "pcireg.h"
+struct pci_vpd_smallres {
+ uint8_t vpdres_byte0;
+
+} __attribute__((__packed__));
+
+struct pci_vpd_largeres {
+ uint8_t vpdres_byte0;
+ uint8_t vpdres_len_lsb;
+ uint8_t vpdres_len_msb;
+
+} __attribute__((__packed__));
+# 671 "pcireg.h"
+struct pci_vpd {
+ uint8_t vpd_key0;
+ uint8_t vpd_key1;
+ uint8_t vpd_len;
+
+} __attribute__((__packed__));
+# 5 "e100.c" 2
+# 1 "defs.h" 1
+struct buf;
+struct context;
+struct file;
+struct inode;
+struct pipe;
+struct proc;
+struct spinlock;
+struct stat;
+
+
+void binit(void);
+struct buf* bread(uint, uint);
+void brelse(struct buf*);
+void bwrite(struct buf*);
+
+
+void console_init(void);
+void cprintf(char*, ...);
+void console_intr(int(*)(void));
+void panic(char*) __attribute__((noreturn));
+void printstack(void);
+
+
+int exec(char*, char**);
+
+
+struct file* filealloc(void);
+void fileclose(struct file*);
+struct file* filedup(struct file*);
+void fileinit(void);
+int fileread(struct file*, char*, int n);
+int filestat(struct file*, struct stat*);
+int filewrite(struct file*, char*, int n);
+
+
+int dirlink(struct inode*, char*, uint);
+struct inode* dirlookup(struct inode*, char*, uint*);
+struct inode* ialloc(uint, short);
+struct inode* idup(struct inode*);
+void iinit(void);
+void ilock(struct inode*);
+void iput(struct inode*);
+void iunlock(struct inode*);
+void iunlockput(struct inode*);
+void iupdate(struct inode*);
+int namecmp(const char*, const char*);
+struct inode* namei(char*);
+struct inode* nameiparent(char*, char*);
+int readi(struct inode*, char*, uint, uint);
+void stati(struct inode*, struct stat*);
+int writei(struct inode*, char*, uint, uint);
+
+
+void ide_init(void);
+void ide_intr(void);
+void ide_rw(struct buf *);
+
+
+void ioapic_enable(int irq, int cpu);
+extern uchar ioapic_id;
+void ioapic_init(void);
+
+
+char* kalloc(int);
+void kfree(char*, int);
+void* kmalloc(int);
+void kmfree(void*, int);
+void kinit(void);
+
+
+void kbd_intr(void);
+
+
+int cpu(void);
+extern volatile uint* lapic;
+void lapic_disableintr(void);
+void lapic_enableintr(void);
+void lapic_eoi(void);
+void lapic_init(int);
+void lapic_startap(uchar, uint);
+void lapic_timerinit(void);
+void lapic_timerintr(void);
+
+
+extern int ismp;
+int mp_bcpu(void);
+void mp_init(void);
+void mp_startthem(void);
+
+
+void pic_enable(int);
+void pic_init(void);
+
+
+int pipealloc(struct file**, struct file**);
+void pipeclose(struct pipe*, int);
+int piperead(struct pipe*, char*, int);
+int pipewrite(struct pipe*, char*, int);
+
+
+struct proc* copyproc(struct proc*);
+struct proc* allocproc(void);
+void exit(void);
+int growproc(int);
+int kill(int);
+void pinit(void);
+void procdump(void);
+void scheduler(void) __attribute__((noreturn));
+void setupsegs(struct proc*);
+void sleep(void*, struct spinlock*);
+int msleep_spin(void*, struct spinlock*, int);
+void userinit(void);
+int wait(void);
+void wakeup(void*);
+void wakeup_one(void*);
+void yield(void);
+
+
+void swtch(struct context*, struct context*);
+
+
+void acquire(struct spinlock*);
+void getcallerpcs(void*, uint*);
+int holding(struct spinlock*);
+void initlock(struct spinlock*, char*);
+void release(struct spinlock*);
+
+
+int memcmp(const void*, const void*, uint);
+void* memmove(void*, const void*, uint);
+void* memset(void*, int, uint);
+char* safestrcpy(char*, const char*, int);
+int strlen(const char*);
+int strncmp(const char*, const char*, uint);
+char* strncpy(char*, const char*, int);
+void* memcpy(void *dst, const void *src, uint n);
+
+
+int argint(int, int*);
+int argptr(int, char**, int);
+int argstr(int, char**);
+int fetchint(struct proc*, uint, int*);
+int fetchstr(struct proc*, uint, char**);
+void syscall(void);
+
+
+void timer_init(void);
+int millitime(void);
+
+
+void idtinit(void);
+extern int ticks;
+void tvinit(void);
+extern struct spinlock tickslock;
+# 6 "e100.c" 2
+# 1 "e100.h" 1
+
+
+
+
+int ether_e100_attach(struct pci_func *pcif);
+int e100_send(void *buffer, uint32_t len);
+int e100_receive(void *buffer, uint32_t len);
+# 79 "e100.h"
+struct scb_status_word {
+    char zero : 2;
+    char rus : 4;
+    char cus : 2;
+
+    char fcp : 1;
+    char rsv : 1;
+    char swi : 1;
+    char mdi : 1;
+    char rnr : 1;
+    char cna : 1;
+    char fr : 1;
+    char cx : 1;
+};
+
+typedef union scb_status_word_tag {
+    uint16_t word;
+    struct scb_status_word status;
+} scb_status_word;
+
+struct scb_command_word {
+    char ru_command : 3;
+    char res : 1;
+    char cu_command : 4;
+
+    char m : 1;
+    char si : 1;
+    char fcp_mask : 1;
+    char er_mask : 1;
+    char rnr_mask : 1;
+    char cna_mask : 1;
+    char fr_mask : 1;
+    char cx_mask : 1;
+};
+
+typedef union scb_command_word_tag {
+    uint16_t word;
+    struct scb_command_word cmd;
+} scb_command_word;
+
+typedef struct command_block_tag {
+    volatile union {
+        uint16_t status_word;
+        struct {
+            short stat : 13;
+            char ok : 1;
+            char x : 1;
+            char c : 1;
+        };
+    };
+    union {
+        uint16_t cmd_word;
+        struct {
+            char cmd : 3;
+            short res : 10;
+            char i : 1;
+            char s : 1;
+            char el : 1;
+        };
+    };
+    struct command_block_tag * link;
+} command_block;
+
+typedef struct op_transmit_cmd_cmd_tag {
+    union {
+        uint16_t word;
+        struct {
+            char cmd : 3;
+            char sf : 1;
+            char nc : 1;
+            char res : 3;
+            char cid : 5;
+            char i : 1;
+            char s : 1;
+            char el : 1;
+        };
+    };
+} op_transmit_cmd_cmd;
+
+typedef struct op_transmit_cmd {
+    command_block base_cmd;
+    uint32_t tbd_addr;
+    struct {
+        int byte_count :14;
+        char res : 1;
+        char eof : 1;
+        uint8_t trans_thres;
+        uint8_t tbd_num;
+    };
+} op_transmit_cmd;
+
+typedef struct rf_desc {
+    volatile command_block head;
+    uint32_t res;
+    volatile struct {
+        uint16_t count : 14;
+        char f : 1;
+        char eof : 1;
+        uint16_t size : 14;
+        char res2 : 2;
+    };
+} rf_desc;
+
+typedef struct rf_status {
+    char tco : 1;
+    char ia : 1;
+    char nomatch : 1;
+    char res : 1;
+    char rcv_err : 1;
+    char type : 1;
+    char res2 : 1;
+    char tooshort : 1;
+    char dma_err : 1;
+    char no_buf : 1;
+    char align_err :1;
+    char crc_err : 1;
+    char res3 : 1;
+} rf_status;
+# 7 "e100.c" 2
+# 1 "proc.h" 1
+# 1 "spinlock.h" 1
+
+
+
+struct spinlock {
+  uint locked;
+
+
+  char *name;
+  int cpu;
+  uint pcs[10];
+
+};
+# 2 "proc.h" 2
+# 1 "param.h" 1
+# 3 "proc.h" 2
+# 1 "mmu.h" 1
+# 30 "mmu.h"
+struct segdesc {
+  uint lim_15_0 : 16;
+  uint base_15_0 : 16;
+  uint base_23_16 : 8;
+  uint type : 4;
+  uint s : 1;
+  uint dpl : 2;
+  uint p : 1;
+  uint lim_19_16 : 4;
+  uint avl : 1;
+  uint rsv1 : 1;
+  uint db : 1;
+  uint g : 1;
+  uint base_31_24 : 8;
+};
+# 85 "mmu.h"
+struct taskstate {
+  uint link;
+  uint esp0;
+  ushort ss0;
+  ushort padding1;
+  uint *esp1;
+  ushort ss1;
+  ushort padding2;
+  uint *esp2;
+  ushort ss2;
+  ushort padding3;
+  void *cr3;
+  uint *eip;
+  uint eflags;
+  uint eax;
+  uint ecx;
+  uint edx;
+  uint ebx;
+  uint *esp;
+  uint *ebp;
+  uint esi;
+  uint edi;
+  ushort es;
+  ushort padding4;
+  ushort cs;
+  ushort padding5;
+  ushort ss;
+  ushort padding6;
+  ushort ds;
+  ushort padding7;
+  ushort fs;
+  ushort padding8;
+  ushort gs;
+  ushort padding9;
+  ushort ldt;
+  ushort padding10;
+  ushort t;
+  ushort iomb;
+};
+
+
+struct gatedesc {
+  uint off_15_0 : 16;
+  uint ss : 16;
+  uint args : 5;
+  uint rsv1 : 3;
+  uint type : 4;
+  uint s : 1;
+  uint dpl : 2;
+  uint p : 1;
+  uint off_31_16 : 16;
+};
+# 4 "proc.h" 2
+# 19 "proc.h"
+struct context {
+  int eip;
+  int esp;
+  int ebx;
+  int ecx;
+  int edx;
+  int esi;
+  int edi;
+  int ebp;
+};
+
+enum proc_state { UNUSED, EMBRYO, SLEEPING, RUNNABLE,
+    RUNNING, ZOMBIE, MSLEEPING};
+
+
+struct proc {
+  char *mem;
+  uint sz;
+  char *kstack;
+  enum proc_state state;
+  int pid;
+  struct proc *parent;
+  void *chan;
+  int killed;
+  struct file *ofile[16];
+  struct inode *cwd;
+  struct context context;
+  struct trapframe *tf;
+  char name[16];
+  struct thread *thr;
+};
+# 60 "proc.h"
+extern struct proc *curproc[1];
+
+
+
+
+
+
+struct cpu {
+  uchar apicid;
+  struct context context;
+  struct taskstate ts;
+  struct segdesc gdt[6];
+  char mpstack[4096];
+  volatile int booted;
+  int nlock;
+};
+
+extern struct cpu cpus[1];
+extern int ncpu;
+extern struct spinlock proc_table_lock;
+# 8 "e100.c" 2
+# 1 "picirq.h" 1
+
+
+
+
+typedef void (*irq_handler_t)(struct trapframe *);
+extern irq_handler_t irq_handler[];
+void reg_irq_handler(int irq_num, irq_handler_t handler);
+# 9 "e100.c" 2
+# 1 "traps.h" 1
+# 10 "e100.c" 2
+# 1 "lwip/include/ipv4/lwip/ip_addr.h" 1
+# 35 "lwip/include/ipv4/lwip/ip_addr.h"
+# 1 "lwip/include/lwip/arch.h" 1
+# 43 "lwip/include/lwip/arch.h"
+# 1 "lwip/xv6/arch/cc.h" 1
+
+
+
+# 1 "lwip/xv6/arch/../../../assert.h" 1
+
+
+
+
+
+
+
+void __assert(const char *, const char *, int, const char *);
+# 5 "lwip/xv6/arch/cc.h" 2
+
+typedef unsigned char u8_t;
+typedef signed char s8_t;
+typedef unsigned short u16_t;
+typedef signed short s16_t;
+typedef unsigned int u32_t;
+typedef signed short s32_t;
+typedef unsigned int mem_ptr_t;
+# 44 "lwip/include/lwip/arch.h" 2
+# 211 "lwip/include/lwip/arch.h"
+extern int errno;
+# 36 "lwip/include/ipv4/lwip/ip_addr.h" 2
+
+
+
+
+
+struct ip_addr {
+  u32_t addr;
+} __attribute__((__packed));
+
+
+
+
+
+
+struct in_addr {
+  u32_t s_addr;
+};
+
+extern const struct ip_addr ip_addr_any;
+extern const struct ip_addr ip_addr_broadcast;
+# 11 "e100.c" 2
+# 1 "lwip/include/ipv4/lwip/ip.h" 1
+# 37 "lwip/include/ipv4/lwip/ip.h"
+# 1 "lwip/include/lwip/def.h" 1
+# 38 "lwip/include/ipv4/lwip/ip.h" 2
+# 1 "lwip/include/lwip/pbuf.h" 1
+# 42 "lwip/include/lwip/pbuf.h"
+typedef enum {
+  PBUF_TRANSPORT,
+  PBUF_IP,
+  PBUF_LINK,
+  PBUF_RAW
+} pbuf_layer;
+
+typedef enum {
+  PBUF_RAM,
+  PBUF_ROM,
+  PBUF_REF,
+  PBUF_POOL
+} pbuf_flag;
+# 66 "lwip/include/lwip/pbuf.h"
+struct pbuf {
+
+  struct pbuf *next;
+
+
+  void *payload;
+# 80 "lwip/include/lwip/pbuf.h"
+  u16_t tot_len;
+
+
+  u16_t len;
+
+
+  u16_t flags;
+
+
+
+
+
+
+  u16_t ref;
+
+};
+
+
+
+
+
+
+void pbuf_init(void);
+
+struct pbuf *pbuf_alloc(pbuf_layer l, u16_t size, pbuf_flag flag);
+void pbuf_realloc(struct pbuf *p, u16_t size);
+u8_t pbuf_header(struct pbuf *p, s16_t header_size);
+void pbuf_ref(struct pbuf *p);
+void pbuf_ref_chain(struct pbuf *p);
+u8_t pbuf_free(struct pbuf *p);
+u8_t pbuf_clen(struct pbuf *p);
+void pbuf_cat(struct pbuf *h, struct pbuf *t);
+void pbuf_chain(struct pbuf *h, struct pbuf *t);
+struct pbuf *pbuf_take(struct pbuf *f);
+struct pbuf *pbuf_dechain(struct pbuf *p);
+# 39 "lwip/include/ipv4/lwip/ip.h" 2
+# 1 "lwip/include/ipv4/lwip/ip_addr.h" 1
+# 40 "lwip/include/ipv4/lwip/ip.h" 2
+
+# 1 "lwip/include/lwip/err.h" 1
+# 35 "lwip/include/lwip/err.h"
+# 1 "lwip/include/lwip/opt.h" 1
+# 36 "lwip/include/lwip/opt.h"
+# 1 "lwip/xv6/lwipopts.h" 1
+# 37 "lwip/include/lwip/opt.h" 2
+# 1 "lwip/include/lwip/debug.h" 1
+# 38 "lwip/include/lwip/opt.h" 2
+# 36 "lwip/include/lwip/err.h" 2
+
+
+
+typedef s8_t err_t;
+# 66 "lwip/include/lwip/err.h"
+extern char *lwip_strerr(err_t err);
+# 42 "lwip/include/ipv4/lwip/ip.h" 2
+
+struct netif;
+
+void ip_init(void);
+struct netif *ip_route(struct ip_addr *dest);
+err_t ip_input(struct pbuf *p, struct netif *inp);
+err_t ip_output(struct pbuf *p, struct ip_addr *src, struct ip_addr *dest,
+  u8_t ttl, u8_t tos, u8_t proto);
+err_t ip_output_if(struct pbuf *p, struct ip_addr *src, struct ip_addr *dest,
+     u8_t ttl, u8_t tos, u8_t proto,
+       struct netif *netif);
+# 102 "lwip/include/ipv4/lwip/ip.h"
+
+struct ip_hdr {
+
+  u16_t _v_hl_tos;
+
+  u16_t _len;
+
+  u16_t _id;
+
+  u16_t _offset;
+
+
+
+
+
+  u16_t _ttl_proto;
+
+  u16_t _chksum;
+
+  struct ip_addr src;
+  struct ip_addr dest;
+} __attribute__((__packed));
+
+# 12 "e100.c" 2
+# 1 "lwip/include/lwip/netif.h" 1
+# 37 "lwip/include/lwip/netif.h"
+# 1 "lwip/include/lwip/err.h" 1
+# 38 "lwip/include/lwip/netif.h" 2
+
+# 1 "lwip/include/ipv4/lwip/ip_addr.h" 1
+# 40 "lwip/include/lwip/netif.h" 2
+
+# 1 "lwip/include/ipv4/lwip/inet.h" 1
+# 37 "lwip/include/ipv4/lwip/inet.h"
+# 1 "lwip/include/lwip/opt.h" 1
+# 38 "lwip/include/ipv4/lwip/inet.h" 2
+
+
+
+u16_t inet_chksum(void *dataptr, u16_t len);
+u16_t inet_chksum_pbuf(struct pbuf *p);
+u16_t inet_chksum_pseudo(struct pbuf *p,
+       struct ip_addr *src, struct ip_addr *dest,
+       u8_t proto, u16_t proto_len);
+
+u32_t inet_addr(const char *(curproc[cpu()]));
+int inet_aton(const char *(curproc[cpu()]), struct in_addr *addr);
+char *inet_ntoa(struct in_addr addr);
+# 77 "lwip/include/ipv4/lwip/inet.h"
+u16_t htons(u16_t x);
+u16_t ntohs(u16_t x);
+u32_t htonl(u32_t x);
+u32_t ntohl(u32_t x);
+# 42 "lwip/include/lwip/netif.h" 2
+# 1 "lwip/include/lwip/pbuf.h" 1
+# 43 "lwip/include/lwip/netif.h" 2
+# 68 "lwip/include/lwip/netif.h"
+struct netif {
+
+  struct netif *next;
+
+
+
+
+  struct ip_addr ip_addr;
+  struct ip_addr netmask;
+  struct ip_addr gw;
+
+
+
+  err_t (* input)(struct pbuf *p, struct netif *inp);
+
+
+
+  err_t (* output)(struct netif *netif, struct pbuf *p,
+       struct ip_addr *ipaddr);
+
+
+
+  err_t (* linkoutput)(struct netif *netif, struct pbuf *p);
+
+
+  void *state;
+
+
+
+
+
+  unsigned char hwaddr_len;
+
+  unsigned char hwaddr[6U];
+
+  u16_t mtu;
+
+  char name[2];
+
+  u8_t num;
+
+  u8_t flags;
+};
+
+
+extern struct netif *netif_list;
+
+extern struct netif *netif_default;
+
+
+void netif_init(void);
+
+struct netif *netif_add(struct netif *netif, struct ip_addr *ipaddr, struct ip_addr *netmask,
+      struct ip_addr *gw,
+      void *state,
+      err_t (* init)(struct netif *netif),
+      err_t (* input)(struct pbuf *p, struct netif *netif));
+
+void
+netif_set_addr(struct netif *netif,struct ip_addr *ipaddr, struct ip_addr *netmask,
+    struct ip_addr *gw);
+void netif_remove(struct netif * netif);
+
+
+
+
+
+struct netif *netif_find(char *name);
+
+void netif_set_default(struct netif *netif);
+
+void netif_set_ipaddr(struct netif *netif, struct ip_addr *ipaddr);
+void netif_set_netmask(struct netif *netif, struct ip_addr *netmast);
+void netif_set_gw(struct netif *netif, struct ip_addr *gw);
+# 13 "e100.c" 2
+# 1 "lwip/include/netif/ethernetif.h" 1
+
+
+# 1 "lwip/include/lwip/netif.h" 1
+# 4 "lwip/include/netif/ethernetif.h" 2
+err_t ethernetif_init(struct netif *);
+void ethernetif_input(struct netif *);
+# 14 "e100.c" 2
+
+static int dev_count = 0;
+
+typedef struct e100_devinfo {
+    int irq;
+    uint32_t regbase[6], regsize[6];
+    uint32_t iobase;
+    struct netif netif;
+    struct spinlock culock;
+    uint32_t cubase;
+    uint32_t cusize;
+
+
+    uint32_t cucount;
+    int cufirst;
+    int cuidle;
+    command_block *cu_last_pkt;
+    command_block *cu_next_pkt;
+    struct spinlock rulock;
+    uint32_t rubase;
+    uint32_t rusize;
+    uint32_t rucount;
+    rf_desc *ru_first;
+    rf_desc *ru_last;
+    rf_desc *ru_prev;
+    int ru_full;
+} e100_dev;
+
+static e100_dev e100_devs[10];
+int e100_reset(e100_dev *dev);
+scb_status_word e100_print_state(e100_dev *dev);
+void e100_put_state(e100_dev *dev, scb_status_word stat);
+uint8_t e100_read_scb_command(e100_dev *dev);
+void e100_cu_command(e100_dev *dev, int command, void *cmd_addr);
+void e100_ru_command(e100_dev *dev, int command, void *cmd_addr);
+void e100_intr(struct trapframe *tf);
+void e100_ru_start(e100_dev *dev);
+void ring_printinfo(e100_dev *dev);
+void ring_init(e100_dev *dev);
+int e100_receive_dev(e100_dev *dev, void *buffer, int len);
+
+char *cu_state_name[];
+char *ru_state_name[];
+
+int
+ether_e100_attach(struct pci_func *pcif)
+{
+    cprintf("PCI: %02x:%02x.%d: "
+            "Intel 82559ER Fast Ethernet PCI Controller %04x:%04x\n",
+  pcif->bus->busno, pcif->dev, pcif->func,
+        (((pcif->dev_id) >> 0) & 0xffff), (((pcif->dev_id) >> 16) & 0xffff));
+    dev_count++;
+    int index = dev_count-1;
+    e100_dev *dev = &e100_devs[index];
+
+    dev->cubase = (uint32_t)kalloc(32 * 4096);
+    if (!dev->cubase)
+    {
+        cprintf("   Failed to allocate CU ring\n");
+        dev_count--;
+        return -1;
+    }
+    dev->rubase = (uint32_t)kalloc(32 * 4096);
+    if (!dev->rubase)
+    {
+        cprintf("   Failed to allocate RU ring\n");
+        dev_count--;
+        return -1;
+    }
+    dev->cusize = 32 * 4096;
+    dev->rusize = 32 * 4096;
+    ring_init(dev);
+
+
+
+    pci_func_enable(pcif);
+    initlock(&dev->culock, "e100 CU lock");
+    dev->irq = pcif->irq_line;
+    int i;
+    for (i=0; i<6; i++)
+    {
+        dev->regbase[i] = pcif->reg_base[i];
+        dev->regsize[i] = pcif->reg_size[i];
+        if (dev->regsize[i] == 64)
+            dev->iobase = dev->regbase[i];
+    }
+    e100_reset(dev);
+    dev->cufirst = 1;
+    dev->cuidle = 1;
+    e100_print_state(dev);
+    struct ip_addr ipaddr;
+    (&ipaddr)->addr = htonl(((u32_t)(192 & 0xff) << 24) | ((u32_t)(168 & 0xff) << 16) | ((u32_t)(1 & 0xff) << 8) | (u32_t)(1 & 0xff));
+    struct ip_addr netmask;
+    (&netmask)->addr = htonl(((u32_t)(255 & 0xff) << 24) | ((u32_t)(255 & 0xff) << 16) | ((u32_t)(255 & 0xff) << 8) | (u32_t)(0 & 0xff));
+    struct ip_addr gw;
+    (&gw)->addr = htonl(((u32_t)(192 & 0xff) << 24) | ((u32_t)(168 & 0xff) << 16) | ((u32_t)(1 & 0xff) << 8) | (u32_t)(2 & 0xff));
+    netif_add(&dev->netif, &ipaddr, &netmask, &gw, 0, ethernetif_init, ip_input);
+    reg_irq_handler(dev->irq, e100_intr);
+    pic_enable(dev->irq);
+    ioapic_enable(dev->irq, ncpu-1);
+    e100_ru_start(dev);
+    return 1;
+}
+
+static void
+delay(int n)
+{
+    volatile int i;
+    int j;
+    for (j=0; j<n; j++)
+    {
+    for (i=0; i<1000; i++)
+        ;
+    }
+}
+
+int
+e100_reset(e100_dev *dev)
+{
+    outl(dev->iobase + 0x8, 0);
+    delay(10);
+    scb_command_word cmd;
+    cmd.word = 0;
+    cmd.cmd.cu_command = 0x7;
+    outw(dev->iobase + 0x2, cmd.word);
+    return 0;
+}
+
+scb_status_word
+e100_get_state(e100_dev *dev)
+{
+    scb_status_word st;
+    st.word = inw(dev->iobase + 0x0);
+    return st;
+}
+
+void
+e100_put_state(e100_dev *dev, scb_status_word stat)
+{
+    outw(dev->iobase + 0x0, stat.word);
+}
+
+scb_status_word
+e100_print_state(e100_dev *dev)
+{
+    scb_status_word state = e100_get_state(dev);
+    cprintf("   RU Status: %s\n", ru_state_name[state.status.rus]);
+    cprintf("   CU Status: %s\n", cu_state_name[state.status.cus]);
+
+    struct scb_status_word stat = state.status;
+    if (stat.cx) cprintf("   CU executed\n");
+    if (stat.fr)
+        cprintf("   RU received\n");
+    if (stat.cna)
+        cprintf("   CU state change\n");
+    if (stat.rnr)
+        cprintf("   RU not ready\n");
+    if (stat.mdi)
+        cprintf("   MDI operation completed\n");
+    if (stat.swi)
+        cprintf("   Software Interrupt\n");
+    if (stat.fcp)
+        cprintf("   Flow Control Pause\n");
+
+    return state;
+}
+
+char *cu_state_name[4] = {
+    "Idle",
+    "Suspended",
+    "LPQ Active",
+    "HQP Active",
+};
+
+char *ru_state_name[16] = {
+    "Idle",
+    "Suspended",
+    "No resources",
+    "Reserved",
+    "Ready",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+};
+
+uint8_t
+e100_read_scb_command(e100_dev *dev)
+{
+    return inb(dev->iobase + 0x2 + 1);
+}
+
+void
+e100_set_gp(e100_dev *dev, void *addr)
+{
+    outl(dev->iobase + 0x4, (uint32_t)addr);
+}
+
+void
+e100_cu_command(e100_dev *dev, int command, void *cmd_addr)
+{
+    scb_command_word cmd;
+    cmd.word = 0;
+    cmd.cmd.cu_command = command;
+    e100_set_gp(dev, cmd_addr);
+    outw(dev->iobase + 0x2, cmd.word);
+    while (e100_read_scb_command(dev)) ;
+}
+
+void
+e100_ru_command(e100_dev *dev, int command, void *cmd_addr)
+{
+    scb_command_word cmd;
+    cmd.word = 0;
+    cmd.cmd.ru_command = command;
+    e100_set_gp(dev, cmd_addr);
+    outw(dev->iobase + 0x2, cmd.word);
+    while (e100_read_scb_command(dev)) ;
+}
+
+void
+e100_intr(struct trapframe *tf)
+{
+
+    int i;
+    int index = -1;
+    for (i=0; i< dev_count; i++)
+    {
+        if (tf->trapno == 32 + e100_devs[i].irq)
+        {
+            index = i;
+            break;
+        }
+    }
+    if (index == -1)
+    {
+        cprintf("e100_intr: can't find corresponding device\n");
+        return;
+    }
+    e100_dev *dev = &e100_devs[index];
+    e100_print_state(dev);
+    scb_status_word state = e100_get_state(dev);
+    struct scb_status_word stat = state.status;
+    state.word |= 0xff00;
+    e100_put_state(dev, state);
+
+    if (stat.cx)
+    {
+
+    }
+    if (stat.fr)
+    {
+        if (!dev->ru_first)
+            dev->ru_first = dev->ru_last;
+        while (dev->ru_last->eof)
+        {
+            ethernetif_input(&dev->netif);
+            dev->ru_last = (void*)dev->ru_last->head.link;
+        }
+    }
+    if (stat.cna)
+    {
+# 303 "e100.c"
+        if (dev->cu_last_pkt)
+        {
+            if (dev->cu_last_pkt->c)
+            {
+                dev->cuidle = 1;
+
+                dev->cu_next_pkt = 0;
+
+            } else {
+                dev->cuidle = 0;
+                while (dev->cu_next_pkt->c)
+                {
+                    if (!dev->cu_next_pkt->ok)
+                        cprintf("send error 0x%08x\n", dev->cu_next_pkt);
+                    dev->cu_next_pkt = (void*)dev->cu_next_pkt->link;
+                }
+                e100_cu_command(dev, 0x2, 0);
+
+            }
+        }
+        ring_printinfo(dev);
+    }
+    if (stat.rnr)
+    {
+        cprintf("e100: RU overrun!\n");
+        dev->ru_full = 1;
+    }
+    if (stat.mdi)
+        cprintf("   MDI operation completed\n");
+    if (stat.swi)
+        cprintf("   Software Interrupt\n");
+    if (stat.fcp)
+        cprintf("   Flow Control Pause\n");
+
+}
+
+void
+ring_printinfo(e100_dev *dev)
+{
+    cprintf("Ring Info:   ");
+    cprintf("head: 0x%08x  ", dev->cu_next_pkt);
+    cprintf("end:  0x%08x\n", dev->cu_last_pkt);
+}
+
+void *
+ring_alloc(e100_dev *dev, uint32_t len)
+{
+    if (len > 2048)
+        return (void*) 0;
+    if (dev->cu_next_pkt)
+    {
+        if ((void*)dev->cu_last_pkt->link == dev->cu_next_pkt)
+            return (void*) 0;
+        return (void*)dev->cu_last_pkt->link;
+    } else {
+        return (void*)dev->cu_last_pkt->link;
+    }
+# 395 "e100.c"
+}
+
+int
+e100_send_dev(e100_dev *dev, void *buffer, uint32_t len)
+{
+
+    if (len > 1600)
+        return -1;
+    acquire(&dev->culock);
+    op_transmit_cmd *start =
+        ring_alloc(dev, sizeof(op_transmit_cmd) + len);
+
+    if (!start)
+    {
+        release(&dev->culock);
+        return -1;
+    }
+    op_transmit_cmd_cmd cmd_word;
+    cmd_word.word = 0;
+    cmd_word.cmd = 4;
+
+    cmd_word.cid = 0xe;
+    cmd_word.i = 1;
+    cmd_word.s = 1;
+    if (!dev->cuidle)
+        dev->cu_last_pkt->s = 0;
+    start->base_cmd.cmd_word = cmd_word.word;
+    start->base_cmd.status_word = 0;
+
+    start->tbd_addr = 0xffffffff;
+    start->byte_count = len;
+    start->eof = 1;
+    start->trans_thres = 0xE0;
+    start->tbd_num = 0;
+    memcpy((void*)(start+1), buffer, len);
+# 438 "e100.c"
+    if (dev->cufirst)
+    {
+        dev->cufirst = 0;
+        dev->cu_next_pkt = &start->base_cmd;
+        e100_cu_command(dev, 0x1, start);
+    }
+    else if (dev->cuidle)
+    {
+        dev->cuidle = 0;
+        dev->cu_next_pkt = &start->base_cmd;
+        e100_cu_command(dev, 0x2, start);
+    }
+    dev->cu_last_pkt = &start->base_cmd;
+    release(&dev->culock);
+    return len;
+}
+
+int
+e100_send(void *buffer, uint32_t len)
+{
+    if (dev_count == 0)
+        return -2;
+    return e100_send_dev(&e100_devs[0], buffer,len);
+}
+
+void
+ring_init(e100_dev *dev)
+{
+    int i;
+    dev->cucount = dev->cusize / 2048;
+    dev->cu_next_pkt = 0;
+    for (i=0; i<dev->cucount ; i++)
+    {
+        command_block *cmd = (void*)(dev->cubase + i * 2048);
+        cmd->cmd_word = 0;
+        cmd->status_word = 0;
+        cmd->c = 1;
+        cmd->el = 1;
+        if (i == dev->cucount - 1)
+        {
+            cmd->link = (void*)dev->cubase;
+            dev->cu_last_pkt = cmd;
+        }
+        else
+        {
+            cmd->link = (void*)((uint32_t)cmd + 2048);
+        }
+
+    }
+    dev->rucount = dev->rusize / 2048;
+    for (i=0; i<dev->rucount; i++)
+    {
+        rf_desc *rfd = (void*)(dev->rubase + i * 2048);
+        rfd->head.cmd_word = 0;
+        rfd->head.status_word = 0;
+        rfd->size = 2048 - sizeof(rf_desc);
+        if (rfd->size & 1)
+            rfd->size--;
+        rfd->eof = 0;
+        rfd->f = 0;
+        if (i == dev->rucount - 1)
+        {
+            rfd->head.link = (void*)dev->rubase;
+            rfd->head.el = 1;
+            dev->ru_prev = rfd;
+        }
+        else
+        {
+            rfd->head.link = (void*)((uint32_t)rfd + 2048);
+        }
+    }
+    dev->ru_first = 0;
+    dev->ru_last = (void*)dev->rubase;
+
+}
+
+void
+e100_ru_start(e100_dev *dev)
+{
+    dev->ru_full = 0;
+    e100_ru_command(dev, 0x1, (void*)dev->rubase);
+}
+
+int
+e100_receive(void *buffer, uint32_t len)
+{
+    if (dev_count == 0)
+        return -2;
+    return e100_receive_dev(&e100_devs[0], buffer, len);
+}
+
+int
+e100_receive_dev(e100_dev *dev, void *buffer, int len)
+{
+    int count;
+    cprintf("e100_receive_dev\n");
+    acquire(&dev->rulock);
+    while (dev->ru_first == 0)
+        sleep(&dev->rulock, &dev->rulock);
+    if (len < dev->ru_first->count)
+    {
+        release(&dev->rulock);
+        return -1;
+    }
+    memcpy(buffer, dev->ru_first + 1, dev->ru_first->count);
+    cprintf("received %d bytes into 0x%08x\n", dev->ru_first->count, buffer);
+    count = dev->ru_first->count;
+    dev->ru_first->eof = 0;
+    dev->ru_first->f = 0;
+    dev->ru_prev->head.el = 0;
+    dev->ru_first->head.el = 1;
+    dev->ru_prev = dev->ru_first;
+    dev->ru_first = (void*)dev->ru_first->head.link;
+    if (dev->ru_full)
+    {
+
+        dev->ru_full = 0;
+        e100_ru_command(dev, 0x1, dev->ru_prev);
+    }
+    if (dev->ru_first == dev->ru_last)
+        dev->ru_first = 0;
+    release(&dev->rulock);
+    return count;
+}
