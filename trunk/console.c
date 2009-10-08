@@ -482,6 +482,7 @@ console_init(void)
   devsw[CONSOLE].read = console_read;
   //use_console_lock = 1;
 
+  reg_irq_handler(IRQ_KBD, kbd_intr);
   pic_enable(IRQ_KBD);
   ioapic_enable(IRQ_KBD, 0);
 }
