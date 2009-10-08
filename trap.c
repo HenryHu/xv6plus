@@ -59,14 +59,14 @@ trap(struct trapframe *tf)
     }
     lapic_eoi();
     break;
-  case IRQ_OFFSET + IRQ_IDE:
+/*  case IRQ_OFFSET + IRQ_IDE:
     ide_intr();
     lapic_eoi();
     break;
   case IRQ_OFFSET + IRQ_KBD:
     kbd_intr();
     lapic_eoi();
-    break;
+    break;*/
   case IRQ_OFFSET + IRQ_SPURIOUS:
     cprintf("spurious interrupt from cpu %d eip %x\n", cpu(), tf->eip);
     lapic_eoi();

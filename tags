@@ -796,7 +796,7 @@ KEY_PGUP	kbd.h	/^#define KEY_PGUP /;"	d
 KEY_RT	kbd.h	/^#define KEY_RT /;"	d
 KEY_UP	kbd.h	/^#define KEY_UP /;"	d
 KSTACKSIZE	param.h	/^#define KSTACKSIZE /;"	d
-LANManResp	lwip/netif/ppp/chpms.c	/^    u_char LANManResp[24];$/;"	m	struct:__anon15	file:	access:public
+LANManResp	lwip/netif/ppp/chpms.c	/^    u_char LANManResp[24];$/;"	m	struct:__anon25	file:	access:public
 LAST_ACK	lwip/include/lwip/tcp.h	/^  LAST_ACK    = 9,$/;"	e	enum:tcp_state
 LCPDEBUG	lwip/netif/ppp/pppdebug.h	/^#define LCPDEBUG(/;"	d
 LCP_ECHOINTERVAL	lwip/include/lwip/opt.h	/^#define LCP_ECHOINTERVAL /;"	d
@@ -820,13 +820,13 @@ LIST	sh.c	/^#define LIST /;"	d	file:
 LISTEN	lwip/include/lwip/tcp.h	/^  LISTEN      = 1,$/;"	e	enum:tcp_state
 LITTLE_ENDIAN	lwip/include/lwip/arch.h	/^#define LITTLE_ENDIAN /;"	d
 LITTLE_ENDIAN	lwip/xv6/lwipopts.h	/^#define LITTLE_ENDIAN /;"	d
-LOG_CRITICAL	lwip/netif/ppp/pppdebug.h	/^	LOG_CRITICAL = 0,$/;"	e	enum:__anon19
-LOG_DEBUG	lwip/netif/ppp/pppdebug.h	/^	LOG_DEBUG = 7$/;"	e	enum:__anon19
-LOG_DETAIL	lwip/netif/ppp/pppdebug.h	/^	LOG_DETAIL = 6,$/;"	e	enum:__anon19
-LOG_ERR	lwip/netif/ppp/pppdebug.h	/^	LOG_ERR = 1,$/;"	e	enum:__anon19
-LOG_INFO	lwip/netif/ppp/pppdebug.h	/^	LOG_INFO = 5,$/;"	e	enum:__anon19
-LOG_NOTICE	lwip/netif/ppp/pppdebug.h	/^	LOG_NOTICE = 2,$/;"	e	enum:__anon19
-LOG_WARNING	lwip/netif/ppp/pppdebug.h	/^	LOG_WARNING = 3,$/;"	e	enum:__anon19
+LOG_CRITICAL	lwip/netif/ppp/pppdebug.h	/^	LOG_CRITICAL = 0,$/;"	e	enum:__anon26
+LOG_DEBUG	lwip/netif/ppp/pppdebug.h	/^	LOG_DEBUG = 7$/;"	e	enum:__anon26
+LOG_DETAIL	lwip/netif/ppp/pppdebug.h	/^	LOG_DETAIL = 6,$/;"	e	enum:__anon26
+LOG_ERR	lwip/netif/ppp/pppdebug.h	/^	LOG_ERR = 1,$/;"	e	enum:__anon26
+LOG_INFO	lwip/netif/ppp/pppdebug.h	/^	LOG_INFO = 5,$/;"	e	enum:__anon26
+LOG_NOTICE	lwip/netif/ppp/pppdebug.h	/^	LOG_NOTICE = 2,$/;"	e	enum:__anon26
+LOG_WARNING	lwip/netif/ppp/pppdebug.h	/^	LOG_WARNING = 3,$/;"	e	enum:__anon26
 LONG	console.c	/^    LONG,$/;"	e	enum:fmt_types	file:
 LONGLONG	console.c	/^    LONGLONG,$/;"	e	enum:fmt_types	file:
 LPTPORT	console.c	/^#define LPTPORT /;"	d	file:
@@ -867,8 +867,8 @@ LcpLinkFailure	lwip/netif/ppp/lcp.c	/^static void LcpLinkFailure (fsm *f)$/;"	f	
 LcpLinkFailure	lwip/netif/ppp/lcp.c	/^static void LcpLinkFailure (fsm*);$/;"	p	file:	signature:(fsm*)
 LcpSendEchoRequest	lwip/netif/ppp/lcp.c	/^static void LcpSendEchoRequest (fsm *f)$/;"	f	file:	signature:(fsm *f)
 LcpSendEchoRequest	lwip/netif/ppp/lcp.c	/^static void LcpSendEchoRequest (fsm*);$/;"	p	file:	signature:(fsm*)
-LinkPhase	lwip/netif/ppp/lcp.h	/^} LinkPhase;$/;"	t	typeref:enum:__anon16
-LogCodes	lwip/netif/ppp/pppdebug.h	/^} LogCodes;$/;"	t	typeref:enum:__anon19
+LinkPhase	lwip/netif/ppp/lcp.h	/^} LinkPhase;$/;"	t	typeref:enum:__anon27
+LogCodes	lwip/netif/ppp/pppdebug.h	/^} LogCodes;$/;"	t	typeref:enum:__anon26
 MAGIC_H	lwip/netif/ppp/magic.h	/^#define MAGIC_H$/;"	d
 MAKEHEADER	lwip/netif/ppp/ppp.h	/^#define MAKEHEADER(/;"	d
 MASKED	lapic.c	/^  #define MASKED /;"	d	file:
@@ -892,15 +892,15 @@ MD5Init	lwip/netif/ppp/md5.c	/^void MD5Init (MD5_CTX *mdContext)$/;"	f	signature
 MD5Init	lwip/netif/ppp/md5.h	/^void MD5Init (MD5_CTX *mdContext);$/;"	p	signature:(MD5_CTX *mdContext)
 MD5Update	lwip/netif/ppp/md5.c	/^void MD5Update(MD5_CTX *mdContext, unsigned char *inBuf, unsigned int inLen)$/;"	f	signature:(MD5_CTX *mdContext, unsigned char *inBuf, unsigned int inLen)
 MD5Update	lwip/netif/ppp/md5.h	/^void MD5Update (MD5_CTX *mdContext, unsigned char *inBuf, unsigned int inLen);$/;"	p	signature:(MD5_CTX *mdContext, unsigned char *inBuf, unsigned int inLen)
-MD5_CTX	lwip/netif/ppp/md5.h	/^} MD5_CTX;$/;"	t	typeref:struct:__anon17
+MD5_CTX	lwip/netif/ppp/md5.h	/^} MD5_CTX;$/;"	t	typeref:struct:__anon29
 MD5_H	lwip/netif/ppp/md5.h	/^#define MD5_H$/;"	d
 MD5_SIGNATURE_SIZE	lwip/netif/ppp/chap.h	/^#define MD5_SIGNATURE_SIZE	/;"	d
 MD5_SUPPORT	lwip/include/lwip/opt.h	/^#define MD5_SUPPORT /;"	d
-MEMP_API_MSG	lwip/include/lwip/memp.h	/^  MEMP_API_MSG,$/;"	e	enum:__anon21
+MEMP_API_MSG	lwip/include/lwip/memp.h	/^  MEMP_API_MSG,$/;"	e	enum:__anon16
 MEMP_DEBUG	lwip/include/lwip/opt.h	/^#define MEMP_DEBUG /;"	d
-MEMP_MAX	lwip/include/lwip/memp.h	/^  MEMP_MAX$/;"	e	enum:__anon21
-MEMP_NETBUF	lwip/include/lwip/memp.h	/^  MEMP_NETBUF,$/;"	e	enum:__anon21
-MEMP_NETCONN	lwip/include/lwip/memp.h	/^  MEMP_NETCONN,$/;"	e	enum:__anon21
+MEMP_MAX	lwip/include/lwip/memp.h	/^  MEMP_MAX$/;"	e	enum:__anon16
+MEMP_NETBUF	lwip/include/lwip/memp.h	/^  MEMP_NETBUF,$/;"	e	enum:__anon16
+MEMP_NETCONN	lwip/include/lwip/memp.h	/^  MEMP_NETCONN,$/;"	e	enum:__anon16
 MEMP_NUM_API_MSG	lwip/include/lwip/opt.h	/^#define MEMP_NUM_API_MSG /;"	d
 MEMP_NUM_NETBUF	lwip/include/lwip/opt.h	/^#define MEMP_NUM_NETBUF /;"	d
 MEMP_NUM_NETCONN	lwip/include/lwip/opt.h	/^#define MEMP_NUM_NETCONN /;"	d
@@ -913,16 +913,16 @@ MEMP_NUM_TCP_PCB_LISTEN	lwip/include/lwip/opt.h	/^#define MEMP_NUM_TCP_PCB_LISTE
 MEMP_NUM_TCP_SEG	lwip/include/lwip/opt.h	/^#define MEMP_NUM_TCP_SEG /;"	d
 MEMP_NUM_TCP_SEG	lwip/xv6/lwipopts.h	/^#define MEMP_NUM_TCP_SEG /;"	d
 MEMP_NUM_UDP_PCB	lwip/include/lwip/opt.h	/^#define MEMP_NUM_UDP_PCB /;"	d
-MEMP_PBUF	lwip/include/lwip/memp.h	/^  MEMP_PBUF,$/;"	e	enum:__anon21
-MEMP_RAW_PCB	lwip/include/lwip/memp.h	/^  MEMP_RAW_PCB,$/;"	e	enum:__anon21
+MEMP_PBUF	lwip/include/lwip/memp.h	/^  MEMP_PBUF,$/;"	e	enum:__anon16
+MEMP_RAW_PCB	lwip/include/lwip/memp.h	/^  MEMP_RAW_PCB,$/;"	e	enum:__anon16
 MEMP_SANITY_CHECK	lwip/include/lwip/opt.h	/^#define MEMP_SANITY_CHECK	/;"	d
 MEMP_STATS	lwip/include/lwip/opt.h	/^#define MEMP_STATS	/;"	d
-MEMP_SYS_TIMEOUT	lwip/include/lwip/memp.h	/^  MEMP_SYS_TIMEOUT,$/;"	e	enum:__anon21
-MEMP_TCPIP_MSG	lwip/include/lwip/memp.h	/^  MEMP_TCPIP_MSG,$/;"	e	enum:__anon21
-MEMP_TCP_PCB	lwip/include/lwip/memp.h	/^  MEMP_TCP_PCB,$/;"	e	enum:__anon21
-MEMP_TCP_PCB_LISTEN	lwip/include/lwip/memp.h	/^  MEMP_TCP_PCB_LISTEN,$/;"	e	enum:__anon21
-MEMP_TCP_SEG	lwip/include/lwip/memp.h	/^  MEMP_TCP_SEG,$/;"	e	enum:__anon21
-MEMP_UDP_PCB	lwip/include/lwip/memp.h	/^  MEMP_UDP_PCB,$/;"	e	enum:__anon21
+MEMP_SYS_TIMEOUT	lwip/include/lwip/memp.h	/^  MEMP_SYS_TIMEOUT,$/;"	e	enum:__anon16
+MEMP_TCPIP_MSG	lwip/include/lwip/memp.h	/^  MEMP_TCPIP_MSG,$/;"	e	enum:__anon16
+MEMP_TCP_PCB	lwip/include/lwip/memp.h	/^  MEMP_TCP_PCB,$/;"	e	enum:__anon16
+MEMP_TCP_PCB_LISTEN	lwip/include/lwip/memp.h	/^  MEMP_TCP_PCB_LISTEN,$/;"	e	enum:__anon16
+MEMP_TCP_SEG	lwip/include/lwip/memp.h	/^  MEMP_TCP_SEG,$/;"	e	enum:__anon16
+MEMP_UDP_PCB	lwip/include/lwip/memp.h	/^  MEMP_UDP_PCB,$/;"	e	enum:__anon16
 MEM_ALIGN	lwip/include/lwip/mem.h	/^#define MEM_ALIGN(/;"	d
 MEM_ALIGNMENT	lwip/include/lwip/opt.h	/^#define MEM_ALIGNMENT /;"	d
 MEM_ALIGN_SIZE	lwip/include/lwip/mem.h	/^#define MEM_ALIGN_SIZE(/;"	d
@@ -943,7 +943,7 @@ MSCHAP_SUPPORT	lwip/include/lwip/opt.h	/^#define MSCHAP_SUPPORT /;"	d
 MSG_DONTWAIT	lwip/include/lwip/sockets.h	/^#define MSG_DONTWAIT /;"	d
 MSLEEPING	proc.h	/^    RUNNING, ZOMBIE, MSLEEPING};$/;"	e	enum:proc_state
 MS_CHAP_RESPONSE_LEN	lwip/netif/ppp/chap.h	/^#define MS_CHAP_RESPONSE_LEN	/;"	d
-MS_ChapResponse	lwip/netif/ppp/chpms.c	/^} MS_ChapResponse;$/;"	t	typeref:struct:__anon15	file:
+MS_ChapResponse	lwip/netif/ppp/chpms.c	/^} MS_ChapResponse;$/;"	t	typeref:struct:__anon25	file:
 MakeKey	lwip/netif/ppp/chpms.c	/^static void	MakeKey (u_char *, u_char *);$/;"	p	file:	signature:(u_char *, u_char *)
 MakeKey	lwip/netif/ppp/chpms.c	/^static void MakeKey($/;"	f	file:	signature:( u_char *key, u_char *des_key )
 NADDRS	fs.h	/^#define NADDRS /;"	d
@@ -1006,7 +1006,7 @@ NPROC	param.h	/^#define NPROC /;"	d
 NPmode	lwip/netif/ppp/ppp.h	/^enum NPmode {$/;"	g
 NSEGS	proc.h	/^#define NSEGS /;"	d
 NSLOTS	lwip/xv6/arch/sys_arch.c	/^#define NSLOTS /;"	d	file:
-NTResp	lwip/netif/ppp/chpms.c	/^    u_char NTResp[24];$/;"	m	struct:__anon15	file:	access:public
+NTResp	lwip/netif/ppp/chpms.c	/^    u_char NTResp[24];$/;"	m	struct:__anon25	file:	access:public
 NULL	defs.h	/^#define NULL /;"	d
 NULL	lwip/include/lwip/def.h	/^#define NULL /;"	d
 NULL	lwip/xv6/arch/sys_arch.c	/^#define NULL /;"	d	file:
@@ -1123,23 +1123,23 @@ PBUF_FLAG_POOL	lwip/include/lwip/pbuf.h	/^#define PBUF_FLAG_POOL /;"	d
 PBUF_FLAG_RAM	lwip/include/lwip/pbuf.h	/^#define PBUF_FLAG_RAM /;"	d
 PBUF_FLAG_REF	lwip/include/lwip/pbuf.h	/^#define PBUF_FLAG_REF /;"	d
 PBUF_FLAG_ROM	lwip/include/lwip/pbuf.h	/^#define PBUF_FLAG_ROM /;"	d
-PBUF_IP	lwip/include/lwip/pbuf.h	/^  PBUF_IP,$/;"	e	enum:__anon22
+PBUF_IP	lwip/include/lwip/pbuf.h	/^  PBUF_IP,$/;"	e	enum:__anon14
 PBUF_IP_HLEN	lwip/include/lwip/pbuf.h	/^#define PBUF_IP_HLEN /;"	d
-PBUF_LINK	lwip/include/lwip/pbuf.h	/^  PBUF_LINK,$/;"	e	enum:__anon22
+PBUF_LINK	lwip/include/lwip/pbuf.h	/^  PBUF_LINK,$/;"	e	enum:__anon14
 PBUF_LINK_HLEN	lwip/include/lwip/opt.h	/^#define PBUF_LINK_HLEN /;"	d
 PBUF_LINK_HLEN	lwip/xv6/lwipopts.h	/^#define PBUF_LINK_HLEN /;"	d
-PBUF_POOL	lwip/include/lwip/pbuf.h	/^  PBUF_POOL$/;"	e	enum:__anon23
+PBUF_POOL	lwip/include/lwip/pbuf.h	/^  PBUF_POOL$/;"	e	enum:__anon15
 PBUF_POOL_BUFSIZE	lwip/include/lwip/opt.h	/^#define PBUF_POOL_BUFSIZE /;"	d
 PBUF_POOL_FAST_FREE	lwip/core/pbuf.c	/^#define PBUF_POOL_FAST_FREE(/;"	d	file:
 PBUF_POOL_FREE	lwip/core/pbuf.c	/^#define PBUF_POOL_FREE(/;"	d	file:
 PBUF_POOL_SIZE	lwip/include/lwip/opt.h	/^#define PBUF_POOL_SIZE /;"	d
 PBUF_POOL_SIZE	lwip/xv6/lwipopts.h	/^#define PBUF_POOL_SIZE /;"	d
-PBUF_RAM	lwip/include/lwip/pbuf.h	/^  PBUF_RAM,$/;"	e	enum:__anon23
-PBUF_RAW	lwip/include/lwip/pbuf.h	/^  PBUF_RAW$/;"	e	enum:__anon22
-PBUF_REF	lwip/include/lwip/pbuf.h	/^  PBUF_REF,$/;"	e	enum:__anon23
-PBUF_ROM	lwip/include/lwip/pbuf.h	/^  PBUF_ROM,$/;"	e	enum:__anon23
+PBUF_RAM	lwip/include/lwip/pbuf.h	/^  PBUF_RAM,$/;"	e	enum:__anon15
+PBUF_RAW	lwip/include/lwip/pbuf.h	/^  PBUF_RAW$/;"	e	enum:__anon14
+PBUF_REF	lwip/include/lwip/pbuf.h	/^  PBUF_REF,$/;"	e	enum:__anon15
+PBUF_ROM	lwip/include/lwip/pbuf.h	/^  PBUF_ROM,$/;"	e	enum:__anon15
 PBUF_STATS	lwip/include/lwip/opt.h	/^#define PBUF_STATS	/;"	d
-PBUF_TRANSPORT	lwip/include/lwip/pbuf.h	/^  PBUF_TRANSPORT,$/;"	e	enum:__anon22
+PBUF_TRANSPORT	lwip/include/lwip/pbuf.h	/^  PBUF_TRANSPORT,$/;"	e	enum:__anon14
 PBUF_TRANSPORT_HLEN	lwip/include/lwip/pbuf.h	/^#define PBUF_TRANSPORT_HLEN /;"	d
 PCI32_DMA_BOUNCE_THRESHOLD	pcireg.h	/^#define PCI32_DMA_BOUNCE_THRESHOLD	/;"	d
 PCINT	lapic.c	/^#define PCINT /;"	d	file:
@@ -1535,25 +1535,25 @@ PCI_VPD_ADDRESS_MASK	pcireg.h	/^#define	PCI_VPD_ADDRESS_MASK	/;"	d
 PCI_VPD_ADDRESS_SHIFT	pcireg.h	/^#define	PCI_VPD_ADDRESS_SHIFT	/;"	d
 PCI_VPD_DATAREG	pcireg.h	/^#define	PCI_VPD_DATAREG(/;"	d
 PCI_VPD_OPFLAG	pcireg.h	/^#define	PCI_VPD_OPFLAG	/;"	d
-PDADDRESS	lwip/netif/ppp/ppp.c	/^    PDADDRESS,                  \/* Process address field. *\/$/;"	e	enum:__anon18	file:
-PDCONTROL	lwip/netif/ppp/ppp.c	/^    PDCONTROL,                  \/* Process control field. *\/$/;"	e	enum:__anon18	file:
-PDDATA	lwip/netif/ppp/ppp.c	/^    PDDATA                      \/* Process data byte. *\/$/;"	e	enum:__anon18	file:
-PDIDLE	lwip/netif/ppp/ppp.c	/^    PDIDLE = 0,                 \/* Idle state - waiting. *\/$/;"	e	enum:__anon18	file:
-PDPROTOCOL1	lwip/netif/ppp/ppp.c	/^    PDPROTOCOL1,                \/* Process protocol field 1. *\/$/;"	e	enum:__anon18	file:
-PDPROTOCOL2	lwip/netif/ppp/ppp.c	/^    PDPROTOCOL2,                \/* Process protocol field 2. *\/$/;"	e	enum:__anon18	file:
-PDSTART	lwip/netif/ppp/ppp.c	/^    PDSTART,                    \/* Process start flag. *\/$/;"	e	enum:__anon18	file:
+PDADDRESS	lwip/netif/ppp/ppp.c	/^    PDADDRESS,                  \/* Process address field. *\/$/;"	e	enum:__anon24	file:
+PDCONTROL	lwip/netif/ppp/ppp.c	/^    PDCONTROL,                  \/* Process control field. *\/$/;"	e	enum:__anon24	file:
+PDDATA	lwip/netif/ppp/ppp.c	/^    PDDATA                      \/* Process data byte. *\/$/;"	e	enum:__anon24	file:
+PDIDLE	lwip/netif/ppp/ppp.c	/^    PDIDLE = 0,                 \/* Idle state - waiting. *\/$/;"	e	enum:__anon24	file:
+PDPROTOCOL1	lwip/netif/ppp/ppp.c	/^    PDPROTOCOL1,                \/* Process protocol field 1. *\/$/;"	e	enum:__anon24	file:
+PDPROTOCOL2	lwip/netif/ppp/ppp.c	/^    PDPROTOCOL2,                \/* Process protocol field 2. *\/$/;"	e	enum:__anon24	file:
+PDSTART	lwip/netif/ppp/ppp.c	/^    PDSTART,                    \/* Process start flag. *\/$/;"	e	enum:__anon24	file:
 PERF_START	lwip/xv6/arch/perf.h	/^#define PERF_START$/;"	d
 PERF_STOP	lwip/xv6/arch/perf.h	/^#define PERF_STOP(/;"	d
 PERIODIC	lapic.c	/^  #define PERIODIC /;"	d	file:
 PF_INET	lwip/include/lwip/sockets.h	/^#define PF_INET /;"	d
 PF_UNSPEC	lwip/include/lwip/sockets.h	/^#define PF_UNSPEC /;"	d
-PHASE_AUTHENTICATE	lwip/netif/ppp/lcp.h	/^	PHASE_AUTHENTICATE,$/;"	e	enum:__anon16
-PHASE_CALLBACK	lwip/netif/ppp/lcp.h	/^	PHASE_CALLBACK,$/;"	e	enum:__anon16
-PHASE_DEAD	lwip/netif/ppp/lcp.h	/^	PHASE_DEAD = 0,$/;"	e	enum:__anon16
-PHASE_ESTABLISH	lwip/netif/ppp/lcp.h	/^	PHASE_ESTABLISH,$/;"	e	enum:__anon16
-PHASE_INITIALIZE	lwip/netif/ppp/lcp.h	/^	PHASE_INITIALIZE,$/;"	e	enum:__anon16
-PHASE_NETWORK	lwip/netif/ppp/lcp.h	/^	PHASE_NETWORK,$/;"	e	enum:__anon16
-PHASE_TERMINATE	lwip/netif/ppp/lcp.h	/^	PHASE_TERMINATE$/;"	e	enum:__anon16
+PHASE_AUTHENTICATE	lwip/netif/ppp/lcp.h	/^	PHASE_AUTHENTICATE,$/;"	e	enum:__anon27
+PHASE_CALLBACK	lwip/netif/ppp/lcp.h	/^	PHASE_CALLBACK,$/;"	e	enum:__anon27
+PHASE_DEAD	lwip/netif/ppp/lcp.h	/^	PHASE_DEAD = 0,$/;"	e	enum:__anon27
+PHASE_ESTABLISH	lwip/netif/ppp/lcp.h	/^	PHASE_ESTABLISH,$/;"	e	enum:__anon27
+PHASE_INITIALIZE	lwip/netif/ppp/lcp.h	/^	PHASE_INITIALIZE,$/;"	e	enum:__anon27
+PHASE_NETWORK	lwip/netif/ppp/lcp.h	/^	PHASE_NETWORK,$/;"	e	enum:__anon27
+PHASE_TERMINATE	lwip/netif/ppp/lcp.h	/^	PHASE_TERMINATE$/;"	e	enum:__anon27
 PIPE	sh.c	/^#define PIPE /;"	d	file:
 PIPESIZE	pipe.c	/^#define PIPESIZE /;"	d	file:
 PORT_DUMP	e100.h	/^#define PORT_DUMP /;"	d
@@ -1598,7 +1598,7 @@ PPPControl_s::vjComp	lwip/netif/ppp/ppp.c	/^    struct vjcompress vjComp;       
 PPPControl_s::vjEnabled	lwip/netif/ppp/ppp.c	/^    int  vjEnabled;                     \/* Flag indicating VJ compression enabled. *\/$/;"	m	struct:PPPControl_s	file:	access:public
 PPPDEBUG	lwip/netif/ppp/pppdebug.h	/^#define PPPDEBUG(/;"	d
 PPPDEBUG_H	lwip/netif/ppp/pppdebug.h	/^#define PPPDEBUG_H$/;"	d
-PPPDevStates	lwip/netif/ppp/ppp.c	/^} PPPDevStates;$/;"	t	typeref:enum:__anon18	file:
+PPPDevStates	lwip/netif/ppp/ppp.c	/^} PPPDevStates;$/;"	t	typeref:enum:__anon24	file:
 PPPERR_ALLOC	lwip/netif/ppp/ppp.h	/^#define PPPERR_ALLOC /;"	d
 PPPERR_AUTHFAIL	lwip/netif/ppp/ppp.h	/^#define PPPERR_AUTHFAIL /;"	d
 PPPERR_CONNECT	lwip/netif/ppp/ppp.h	/^#define PPPERR_CONNECT /;"	d
@@ -2038,7 +2038,7 @@ UPAP_DEFREQTIME	lwip/include/lwip/opt.h	/^#define UPAP_DEFREQTIME /;"	d
 UPAP_DEFTIMEOUT	lwip/include/lwip/opt.h	/^#define UPAP_DEFTIMEOUT /;"	d
 UPAP_HEADERLEN	lwip/netif/ppp/pap.h	/^#define UPAP_HEADERLEN	/;"	d
 USE_CRYPT	lwip/netif/ppp/chpms.c	/^#define USE_CRYPT$/;"	d	file:
-UseNT	lwip/netif/ppp/chpms.c	/^    u_char UseNT;		\/* If 1, ignore the LANMan response field *\/$/;"	m	struct:__anon15	file:	access:public
+UseNT	lwip/netif/ppp/chpms.c	/^    u_char UseNT;		\/* If 1, ignore the LANMan response field *\/$/;"	m	struct:__anon25	file:	access:public
 VER	lapic.c	/^#define VER /;"	d	file:
 VJBSDHDR_H	lwip/netif/ppp/vjbsdhdr.h	/^#define VJBSDHDR_H$/;"	d
 VJF_TOSS	lwip/netif/ppp/vj.h	/^#define VJF_TOSS /;"	d
@@ -2098,18 +2098,18 @@ __LWIP_UDP_H__	lwip/include/lwip/udp.h	/^#define __LWIP_UDP_H__$/;"	d
 __NETIF_ETHARP_H__	lwip/include/netif/etharp.h	/^#define __NETIF_ETHARP_H__$/;"	d
 __NETIF_LOOPIF_H__	lwip/include/netif/loopif.h	/^#define __NETIF_LOOPIF_H__$/;"	d
 __NETIF_SLIPIF_H__	lwip/include/netif/slipif.h	/^#define __NETIF_SLIPIF_H__$/;"	d
-__anon15::LANManResp	lwip/netif/ppp/chpms.c	/^    u_char LANManResp[24];$/;"	m	struct:__anon15	file:	access:public
-__anon15::NTResp	lwip/netif/ppp/chpms.c	/^    u_char NTResp[24];$/;"	m	struct:__anon15	file:	access:public
-__anon15::UseNT	lwip/netif/ppp/chpms.c	/^    u_char UseNT;		\/* If 1, ignore the LANMan response field *\/$/;"	m	struct:__anon15	file:	access:public
-__anon17::buf	lwip/netif/ppp/md5.h	/^  u32_t buf[4];                                    \/* scratch buffer *\/$/;"	m	struct:__anon17	access:public
-__anon17::digest	lwip/netif/ppp/md5.h	/^  unsigned char digest[16];     \/* actual digest after MD5Final call *\/$/;"	m	struct:__anon17	access:public
-__anon17::i	lwip/netif/ppp/md5.h	/^  u32_t i[2];                   \/* number of _bits_ handled mod 2^64 *\/$/;"	m	struct:__anon17	access:public
-__anon17::in	lwip/netif/ppp/md5.h	/^  unsigned char in[64];                              \/* input buffer *\/$/;"	m	struct:__anon17	access:public
 __anon1::buf	console.c	/^  char buf[INPUT_BUF];$/;"	m	struct:__anon1	file:	access:public
 __anon1::e	console.c	/^  int e;  \/\/ Edit index$/;"	m	struct:__anon1	file:	access:public
 __anon1::lock	console.c	/^  struct spinlock lock;$/;"	m	struct:__anon1	typeref:struct:__anon1::spinlock	file:	access:public
 __anon1::r	console.c	/^  int r;  \/\/ Read index$/;"	m	struct:__anon1	file:	access:public
 __anon1::w	console.c	/^  int w;  \/\/ Write index$/;"	m	struct:__anon1	file:	access:public
+__anon25::LANManResp	lwip/netif/ppp/chpms.c	/^    u_char LANManResp[24];$/;"	m	struct:__anon25	file:	access:public
+__anon25::NTResp	lwip/netif/ppp/chpms.c	/^    u_char NTResp[24];$/;"	m	struct:__anon25	file:	access:public
+__anon25::UseNT	lwip/netif/ppp/chpms.c	/^    u_char UseNT;		\/* If 1, ignore the LANMan response field *\/$/;"	m	struct:__anon25	file:	access:public
+__anon29::buf	lwip/netif/ppp/md5.h	/^  u32_t buf[4];                                    \/* scratch buffer *\/$/;"	m	struct:__anon29	access:public
+__anon29::digest	lwip/netif/ppp/md5.h	/^  unsigned char digest[16];     \/* actual digest after MD5Final call *\/$/;"	m	struct:__anon29	access:public
+__anon29::i	lwip/netif/ppp/md5.h	/^  u32_t i[2];                   \/* number of _bits_ handled mod 2^64 *\/$/;"	m	struct:__anon29	access:public
+__anon29::in	lwip/netif/ppp/md5.h	/^  unsigned char in[64];                              \/* input buffer *\/$/;"	m	struct:__anon29	access:public
 __anon2::inode	fs.c	/^  struct inode inode[NINODE];$/;"	m	struct:__anon2	typeref:struct:__anon2::inode	file:	access:public
 __anon2::lock	fs.c	/^  struct spinlock lock;$/;"	m	struct:__anon2	typeref:struct:__anon2::spinlock	file:	access:public
 __assert	assert.c	/^void __assert(const char *func, const char *file, $/;"	f	signature:(const char *func, const char *file, int line, const char *expr)
@@ -2259,7 +2259,7 @@ buf	cat.c	/^char buf[512];$/;"	v
 buf	console.c	/^  char buf[INPUT_BUF];$/;"	m	struct:__anon1	file:	access:public
 buf	grep.c	/^char buf[1024];$/;"	v
 buf	lwip/core/ipv4/ip_frag.c	/^static u8_t buf[MEM_ALIGN_SIZE(MAX_MTU)];$/;"	v	file:
-buf	lwip/netif/ppp/md5.h	/^  u32_t buf[4];                                    \/* scratch buffer *\/$/;"	m	struct:__anon17	access:public
+buf	lwip/netif/ppp/md5.h	/^  u32_t buf[4];                                    \/* scratch buffer *\/$/;"	m	struct:__anon29	access:public
 buf	usertests.c	/^char buf[2048];$/;"	v
 buf	wc.c	/^char buf[512];$/;"	v
 buf::data	buf.h	/^  uchar data[512];$/;"	m	struct:buf	access:public
@@ -2603,7 +2603,7 @@ dhcp_timeout	lwip/core/dhcp.c	/^static void dhcp_timeout(struct netif *netif);$/
 dhcp_unfold_reply	lwip/core/dhcp.c	/^static err_t dhcp_unfold_reply(struct dhcp *dhcp)$/;"	f	file:	signature:(struct dhcp *dhcp)
 dhcp_unfold_reply	lwip/core/dhcp.c	/^static err_t dhcp_unfold_reply(struct dhcp *dhcp);$/;"	p	file:	signature:(struct dhcp *dhcp)
 did_authup	lwip/netif/ppp/auth.c	/^static int did_authup;$/;"	v	file:
-digest	lwip/netif/ppp/md5.h	/^  unsigned char digest[16];     \/* actual digest after MD5Final call *\/$/;"	m	struct:__anon17	access:public
+digest	lwip/netif/ppp/md5.h	/^  unsigned char digest[16];     \/* actual digest after MD5Final call *\/$/;"	m	struct:__anon29	access:public
 dinode	fs.h	/^struct dinode {$/;"	s
 dinode::addrs	fs.h	/^  uint addrs[NADDRS];   \/\/ Data block addresses$/;"	m	struct:dinode	access:public
 dinode::major	fs.h	/^  short major;          \/\/ Major device number (T_DEV only)$/;"	m	struct:dinode	access:public
@@ -3101,7 +3101,7 @@ hwaddr	lwip/include/lwip/netif.h	/^  unsigned char hwaddr[NETIF_MAX_HWADDR_LEN];
 hwaddr_len	lwip/include/lwip/netif.h	/^  unsigned char hwaddr_len;$/;"	m	struct:netif	access:public
 i	e100.h	/^            char i      : 1;$/;"	m	struct:op_transmit_cmd_cmd_tag	access:public
 i	e100.h	/^            char i :    1;     \/\/ Interrupt after finish$/;"	m	struct:command_block_tag	access:public
-i	lwip/netif/ppp/md5.h	/^  u32_t i[2];                   \/* number of _bits_ handled mod 2^64 *\/$/;"	m	struct:__anon17	access:public
+i	lwip/netif/ppp/md5.h	/^  u32_t i[2];                   \/* number of _bits_ handled mod 2^64 *\/$/;"	m	struct:__anon29	access:public
 i2b	mkfs.c	/^i2b(uint inum)$/;"	f	signature:(uint inum)
 ia	e100.h	/^    char ia :       1;$/;"	m	struct:rf_status	access:public
 ialloc	defs.h	/^struct inode*   ialloc(uint, short);$/;"	p	signature:(uint, short)
@@ -3187,7 +3187,7 @@ iinit	fs.c	/^iinit(void)$/;"	f	signature:(void)
 ilock	defs.h	/^void            ilock(struct inode*);$/;"	p	signature:(struct inode*)
 ilock	fs.c	/^ilock(struct inode *ip)$/;"	f	signature:(struct inode *ip)
 imcrp	mp.h	/^  uchar imcrp;$/;"	m	struct:mp	access:public
-in	lwip/netif/ppp/md5.h	/^  unsigned char in[64];                              \/* input buffer *\/$/;"	m	struct:__anon17	access:public
+in	lwip/netif/ppp/md5.h	/^  unsigned char in[64];                              \/* input buffer *\/$/;"	m	struct:__anon29	access:public
 inACCM	lwip/netif/ppp/ppp.c	/^    ext_accm inACCM;                    \/* Async-Ctl-Char-Map for input. *\/$/;"	m	struct:PPPControl_s	file:	access:public
 inEscaped	lwip/netif/ppp/ppp.c	/^    char inEscaped;                     \/* Escape next character. *\/$/;"	m	struct:PPPControl_s	file:	access:public
 inFCS	lwip/netif/ppp/ppp.c	/^    u16_t inFCS;                        \/* Input Frame Check Sequence value. *\/$/;"	m	struct:PPPControl_s	file:	access:public
@@ -3843,7 +3843,7 @@ memp_num	lwip/core/memp.c	/^static const u16_t memp_num[MEMP_MAX] = {$/;"	v	file
 memp_realloc	lwip/include/lwip/memp.h	/^void *memp_realloc(memp_t fromtype, memp_t totype, void *mem);$/;"	p	signature:(memp_t fromtype, memp_t totype, void *mem)
 memp_sanity	lwip/core/memp.c	/^memp_sanity(void)$/;"	f	file:	signature:(void)
 memp_sizes	lwip/core/memp.c	/^static const u16_t memp_sizes[MEMP_MAX] = {$/;"	v	file:
-memp_t	lwip/include/lwip/memp.h	/^} memp_t;$/;"	t	typeref:enum:__anon21
+memp_t	lwip/include/lwip/memp.h	/^} memp_t;$/;"	t	typeref:enum:__anon16
 memp_tab	lwip/core/memp.c	/^static struct memp *memp_tab[MEMP_MAX];$/;"	v	typeref:struct:memp	file:
 memset	defs.h	/^void*           memset(void*, int, uint);$/;"	p	signature:(void*, int, uint)
 memset	string.c	/^memset(void *dst, int c, uint n)$/;"	f	signature:(void *dst, int c, uint n)
@@ -4269,14 +4269,14 @@ pbuf_clen	lwip/include/lwip/pbuf.h	/^u8_t pbuf_clen(struct pbuf *p);  $/;"	p	sig
 pbuf_dechain	lwip/core/pbuf.c	/^pbuf_dechain(struct pbuf *p)$/;"	f	signature:(struct pbuf *p)
 pbuf_dechain	lwip/include/lwip/pbuf.h	/^struct pbuf *pbuf_dechain(struct pbuf *p);$/;"	p	signature:(struct pbuf *p)
 pbuf_dequeue	lwip/core/pbuf.c	/^pbuf_dequeue(struct pbuf *p)$/;"	f	signature:(struct pbuf *p)
-pbuf_flag	lwip/include/lwip/pbuf.h	/^} pbuf_flag;$/;"	t	typeref:enum:__anon23
+pbuf_flag	lwip/include/lwip/pbuf.h	/^} pbuf_flag;$/;"	t	typeref:enum:__anon15
 pbuf_free	lwip/core/pbuf.c	/^pbuf_free(struct pbuf *p)$/;"	f	signature:(struct pbuf *p)
 pbuf_free	lwip/include/lwip/pbuf.h	/^u8_t pbuf_free(struct pbuf *p);$/;"	p	signature:(struct pbuf *p)
 pbuf_header	lwip/core/pbuf.c	/^pbuf_header(struct pbuf *p, s16_t header_size)$/;"	f	signature:(struct pbuf *p, s16_t header_size)
 pbuf_header	lwip/include/lwip/pbuf.h	/^u8_t pbuf_header(struct pbuf *p, s16_t header_size);$/;"	p	signature:(struct pbuf *p, s16_t header_size)
 pbuf_init	lwip/core/pbuf.c	/^pbuf_init(void)$/;"	f	signature:(void)
 pbuf_init	lwip/include/lwip/pbuf.h	/^void pbuf_init(void);$/;"	p	signature:(void)
-pbuf_layer	lwip/include/lwip/pbuf.h	/^} pbuf_layer;$/;"	t	typeref:enum:__anon22
+pbuf_layer	lwip/include/lwip/pbuf.h	/^} pbuf_layer;$/;"	t	typeref:enum:__anon14
 pbuf_pool	lwip/core/pbuf.c	/^static struct pbuf *pbuf_pool = NULL;$/;"	v	typeref:struct:pbuf	file:
 pbuf_pool_alloc	lwip/core/pbuf.c	/^pbuf_pool_alloc(void)$/;"	f	file:	signature:(void)
 pbuf_pool_alloc_lock	lwip/core/pbuf.c	/^static volatile u8_t pbuf_pool_free_lock, pbuf_pool_alloc_lock;$/;"	v	file:
